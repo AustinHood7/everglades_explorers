@@ -1,0 +1,27 @@
+{
+    "questions": [
+      {
+        "id": 1,
+        "question": "What is the primary habitat of the Everglades2?",
+        "answers": [
+          "Desert",
+          "Rainforest",
+          "Wetlands",
+          "Savanna"
+        ],
+        "correct": 2
+      },
+      {
+        "id": 2,
+        "question": "Which animal is commonly found in the Everglades2?",
+        "answers": [
+          "Polar Bear",
+          "Alligator",
+          "Kangaroo",
+          "Penguin"
+        ],
+        "correct": 1
+      }
+    ]
+  }
+  
