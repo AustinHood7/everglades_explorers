@@ -2,23 +2,22 @@
     "questions": [
       {
         "id": 1,
-        "question": "What is the primary habitat of the Everglades?",
+        "question": "The Everglades is on the intersection of which two climates?",
         "answers": [
-          "Desert",
-          "Rainforest",
-          "Wetlands",
-          "Savanna"
+          "Subtropical & tropical",
+          "Rainforest & wetlands",
+          "Subtropical & desert"
         ],
-        "correct": 2
+        "correct": 1
       },
       {
         "id": 2,
-        "question": "Which animal is commonly found in the Everglades?",
+        "question": "When we talk about ecosystems, what is an environmental component that restricts the number of individuals in the population?",
         "answers": [
-          "Polar Bear",
-          "Alligator",
-          "Kangaroo",
-          "Penguin"
+          "Limiting Factor",
+          "Predators",
+          "Introduced Species",
+          "Invasive Species"
         ],
         "correct": 1
       }

@@ -2,26 +2,25 @@
     "questions": [
       {
         "id": 1,
-        "question": "What is the primary habitat of the Everglades2?",
+        "question": "What is periphyton?",
         "answers": [
-          "Desert",
-          "Rainforest",
-          "Wetlands",
-          "Savanna"
+          "A collection of species that cling to submerged plants in aquatic systems",
+          "A living multi-species that gets energy from dead, submerged plants",
+          "A collection of dead microorganisms that cling to underwater plants",
+          "A collection of dead algae that cling to submerged plants in aquatic systems"
         ],
         "correct": 2
       },
       {
         "id": 2,
-        "question": "Which animal is commonly found in the Everglades2?",
+        "question": "Which is an example of how other organisms in the Everglades benefit from periphyton?",
         "answers": [
-          "Polar Bear",
-          "Alligator",
-          "Kangaroo",
-          "Penguin"
+          "It provides food to small fish, aquatic insects, snails, and frogs",
+          "It forms a protective barrier between decomposing plants and other organisms",
+          "It provides an indication the water in an ecosystem is polluted",
+          "It forms a barrier in estuaries to prevent organisms from salt water and fresh water from interacting"
         ],
         "correct": 1
       }
     ]
   }
-  
