@@ -13,6 +13,7 @@ export default function QuestionPage() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answerSubmitted, setAnswerSubmitted] = useState(false); // To track if the answer has been submitted
   const [showResult, setShowResult] = useState(false);
+  const [correctAnswers, setCorrectAnswers] = useState(0); // Track the number of correct answers
 
   const router = useRouter(); // Initialize router for navigation
 
@@ -35,6 +36,9 @@ export default function QuestionPage() {
 
   const handleSubmitAnswer = () => {
     setAnswerSubmitted(true); // Mark the answer as submitted
+    if (selectedAnswer === currentQuestion.correct) {
+      setCorrectAnswers(correctAnswers + 1); // Increment correct answers if the selected answer is correct
+    }
   };
 
   const handleNextQuestion = () => {
@@ -63,6 +67,7 @@ export default function QuestionPage() {
     setSelectedAnswer(null);
     setAnswerSubmitted(false);
     setShowResult(false);
+    setCorrectAnswers(0); // Reset the correct answers count
   };
 
   return (
@@ -73,7 +78,7 @@ export default function QuestionPage() {
           : "bg-secondary"
       }`}
       style={{
-        backgroundImage: showResult ? "url('/gator.jpg')" : "none", // Use gator.jpg only on the final step
+        backgroundImage: showResult ? "url('/gator_on_river.jpg')" : "none", // Use gator.jpg only on the final step
       }}
     >
       <span className="w-full justify-between flex text-primary px-10">
@@ -158,7 +163,7 @@ export default function QuestionPage() {
           <div className="text-center bg-black/50 px-10 py-16 rounded-xl">
             <h2 className="text-2xl font-bold text-zinc-100">Quiz Completed!</h2>
             <p className="text-lg text-zinc-300 mt-2">
-              You answered {questions.length} questions!
+              You scored {correctAnswers} out of {questions.length}!
             </p>
             <button
               onClick={handleResetQuiz} 
