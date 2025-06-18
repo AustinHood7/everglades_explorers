@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import Image from 'next/image';
 
 const positiveSkills = [
   "Deep breaths",
@@ -91,6 +92,15 @@ export default function CopingSkillsSort({ onComplete }) {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
+        <div className="flex justify-center">
+          <Image 
+            src="/brain.png" 
+            alt="Brain" 
+            width={400} 
+            height={300} 
+            className="max-w-md rounded-lg shadow-lg mb-6" 
+          />
+        </div>
         <div className="relative w-48 h-48">
           <img 
             src="/trash_bucket.png" 

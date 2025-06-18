@@ -6,6 +6,7 @@ import questions from './questions.json';
 import QuestionDisplay from './components/QuestionDisplay';
 import BrainActionsMatch from './components/BrainActionsMatch';
 import DragDropQuestion from './components/DragDropQuestion';
+import Image from 'next/image';
 
 export default function QuestionPage() {
   const router = useRouter();
@@ -142,7 +143,13 @@ export default function QuestionPage() {
             Check point passed- time to help this brain! 
             </p>
             <div className="flex justify-center">
-              <img src="/brain.png" alt="Unlocked Door" className="max-w-md rounded-lg shadow-lg mb-6" />
+              <Image 
+                src="/brain.png" 
+                alt="Brain" 
+                width={400} 
+                height={300} 
+                className="max-w-md rounded-lg shadow-lg mb-6" 
+              />
             </div>
             <button
               onClick={handleContinueToNextSection}
@@ -155,10 +162,16 @@ export default function QuestionPage() {
           <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-8 text-center">
             <h2 className="text-3xl font-bold text-primary mb-4">Checkpoint Reached!</h2>
             <p className="text-xl mb-6 text-secondary px-4">
-            This brain can't remember what the right answer is, can you help it? True or False: there the best coping skills for myself are the same exact ones as other peoples.
+              This brain can&apos;t remember what the right answer is, can you help it? True or False: there the best coping skills for myself are the same exact ones as other peoples.
             </p>
             <div className="flex justify-center">
-              <img src="/brain.png" alt="Unlocked Door" className="max-w-md rounded-lg shadow-lg mb-6" />
+              <Image 
+                src="/brain.png" 
+                alt="Brain" 
+                width={400} 
+                height={300} 
+                className="max-w-md rounded-lg shadow-lg mb-6" 
+              />
             </div>
             <button
               onClick={handleContinueFromSecondCheckpoint}

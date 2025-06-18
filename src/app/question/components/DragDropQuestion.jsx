@@ -145,7 +145,7 @@ const DragDropQuestion = ({ question, onComplete }) => {
           isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
         }`}>
           {isCorrect ? (
-            <p className="text-center font-semibold">Great job! You've correctly sorted all the coping skills!</p>
+            <p className="text-center font-semibold">Great job! You&apos;ve correctly sorted all the coping skills!</p>
           ) : (
             <p className="text-center font-semibold">Not quite right. Try again!</p>
           )}
