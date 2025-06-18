@@ -2,25 +2,223 @@
     "questions": [
       {
         "id": 1,
-        "question": "What is the primary habitat of the Everglades?",
+        "question": "What are coping skills?",
         "answers": [
-          "Desert",
-          "Rainforest",
-          "Wetlands",
-          "Savanna"
+          "Strategies people use to manage stressful or challenging situations in life",
+          "Avoiding thinking about things that make people stressed",
+          "Happy thoughts used to not think about stress"
         ],
-        "correct": 2
+        "correct": 0
       },
       {
         "id": 2,
-        "question": "Which animal is commonly found in the Everglades?",
+        "question": "Can coping skills be negative or bad for your long-term health?",
         "answers": [
-          "Polar Bear",
-          "Alligator",
-          "Kangaroo",
-          "Penguin"
+          "Yes",
+          "No"
+        ],
+        "correct": 0
+      },
+      {
+        "id": 3,
+        "question": "What makes coping skills negative or positive?",
+        "answers": [
+          "Negative coping skills will make your health worse over time; positive coping skills make your health worse over time",
+          "Negative coping skills will make your health worse over time; positive coping skills have no impact on your health",
+          "Negative coping skills will make your health better over time; positive coping skills make your health worse over time",
+          "Negative coping skills will make your health worse over time; positive coping skills make your health better over time"
+        ],
+        "correct": 3
+      },
+      {
+        "id": 4,
+        "question": "Myth or fact: It's okay to take extra pain medicine if the first dose doesn't work fast enough",
+        "answers": [
+          "Myth",
+          "Fact"
+        ],
+        "correct": 0
+      },
+      {
+        "id": 5,
+        "question": "Myth or fact: Over-the-counter medicines can be dangerous if misused",
+        "answers": [
+          "Myth",
+          "Fact"
         ],
         "correct": 1
+      },
+      {
+        "id": 6,
+        "question": "Myth or fact: Over the counter medications, like Tylenol, are safer to use than prescription medications",
+        "answers": [
+          "Myth",
+          "Fact"
+        ],
+        "correct": 0
+      },
+      {
+        "id": 7,
+        "question": "This space is fried! Help this brain remember what to do:",
+        "answers": [
+          "Take deep breaths and stay calm",
+          "Use negative coping skills to feel better",
+          "Ignore the problem and hope it goes away",
+          "Panic and react immediately"
+        ],
+        "correct": 0
+      },
+      {
+        "id": 8,
+        "type": "brainActionsMatch",
+        "question": "Match the coping skills with their instructions to help this brain remember how to use them!",
+        "answers": [],
+        "correct": 0
+      },
+      {
+        "id": 9,
+        "question": "This brain can't remember what the right answer is, can you help it? True or False: there the best coping skills for myself are the same as other peoples.",
+        "answers": [
+          "True",
+          "False"
+        ],
+        "correct": 1
+      },
+      {
+        "id": 10,
+        "type": "TrueFalse",
+        "question": "This brain can't remember what the right answer is, can you help it? True or False: there the best coping skills for myself are the same as other peoples.",
+        "answers": [
+          "True",
+          "False"
+        ],
+        "correct": 1
+      },
+      {
+        "id": 11,
+        "type": "TrueFalse",
+        "question": "This brain cant remember what the right answer is, can you help it? True or False: there the best coping skills for myself are the same as other peoples.",
+        "answers": [
+          "True",
+          "False"
+        ],
+        "correct": 1
+      },
+      {
+        "id": 12,
+        "type": "TrueFalse",
+        "question": "This brain can't remember what the right answer is, can you help it? True or False: there the best coping skills for myself are the same as other peoples.",
+        "answers": [
+          "True",
+          "False"
+        ],
+        "correct": 1
+      },
+      {
+        "id": 14,
+        "type": "dragDrop",
+        "question": "Sort these coping skills into healthy and unhealthy categories:",
+        "categories": [
+          {
+            "id": "healthy",
+            "title": "Healthy Coping Skills"
+          },
+          {
+            "id": "unhealthy",
+            "title": "Unhealthy Coping Skills"
+          }
+        ],
+        "items": [
+          {
+            "id": "journaling",
+            "text": "Writing down your thoughts and feelings"
+          },
+          {
+            "id": "screaming",
+            "text": "Yelling and screaming when angry"
+          },
+          {
+            "id": "exercise",
+            "text": "Going for a walk or run"
+          },
+          {
+            "id": "isolation",
+            "text": "Avoiding friends and family"
+          },
+          {
+            "id": "music",
+            "text": "Listening to calming music"
+          },
+          {
+            "id": "procrastination",
+            "text": "Putting off dealing with problems"
+          }
+        ],
+        "correctAnswers": {
+          "healthy": ["journaling", "exercise", "music"],
+          "unhealthy": ["screaming", "isolation", "procrastination"]
+        }
+      },
+      {
+        "id": 13,
+        "type": "dragDrop",
+        "question": "Sort these coping skills into positive and negative categories:",
+        "categories": [
+          {
+            "id": "positive",
+            "title": "Positive Coping Skills"
+          },
+          {
+            "id": "negative",
+            "title": "Negative Coping Skills"
+          }
+        ],
+        "items": [
+          {
+            "id": "deep-breathing",
+            "text": "Taking deep breaths when feeling stressed"
+          },
+          {
+            "id": "exercise",
+            "text": "Going for a run to clear your mind"
+          },
+          {
+            "id": "substance-use",
+            "text": "Using drugs or alcohol to feel better"
+          },
+          {
+            "id": "talking",
+            "text": "Talking to a trusted friend about problems"
+          },
+          {
+            "id": "avoidance",
+            "text": "Ignoring problems and hoping they go away"
+          },
+          {
+            "id": "meditation",
+            "text": "Practicing mindfulness meditation"
+          }
+        ],
+        "correctAnswers": {
+          "positive": ["deep-breathing", "exercise", "talking", "meditation"],
+          "negative": ["substance-use", "avoidance"]
+        }
+      },
+      {
+        "id": 14,
+        "type": "clickAway",
+        "question": "Click on all the positive coping skills to help this brain remember them!",
+        "answers": [
+          "Taking deep breaths",
+          "Going for a walk",
+          "Talking to a friend",
+          "Writing in a journal",
+          "Listening to music",
+          "Doing exercise",
+          "Practicing meditation",
+          "Drawing or painting",
+          "Reading a book"
+        ]
       }
     ]
   }

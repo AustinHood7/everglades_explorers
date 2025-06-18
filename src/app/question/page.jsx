@@ -1,285 +1,198 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
-import highSchoolQuestions from "./highSchoolQuestions.json";
-import middleSchoolQuestions from "./middleSchoolQuestions.json";
-import highSchoolQuestionPool from "./highSchoolQuestionPool.json";
-import {FaXmark} from "react-icons/fa6";
-
-import { FaCheck, FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import questions from './questions.json';
+import QuestionDisplay from './components/QuestionDisplay';
+import BrainActionsMatch from './components/BrainActionsMatch';
+import DragDropQuestion from './components/DragDropQuestion';
 
 export default function QuestionPage() {
-  const [questionSet, setQuestionSet] = useState(null); // To track which question set is selected
+  const router = useRouter();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [answerSubmitted, setAnswerSubmitted] = useState(false); // To track if the answer has been submitted
   const [showResult, setShowResult] = useState(false);
-  const [correctAnswers, setCorrectAnswers] = useState(0); // Track the number of correct answers
-  const [isPoolStep, setIsPoolStep] = useState(false); // Track if we're in the intermediate pool step
-  const [dragAnswers, setDragAnswers] = useState([...highSchoolQuestionPool.pool]); // Initialize draggable answers
-  const [slots, setSlots] = useState(
-    highSchoolQuestionPool.questions.map((question) => ({
-      ...question,
-      droppedAnswer: null, // Tracks the dropped answer for each slot
-    }))
-  );
+  const [score, setScore] = useState(0);
+  const [showCheckpoint, setShowCheckpoint] = useState(false);
+  const [showSecondCheckpoint, setShowSecondCheckpoint] = useState(false);
+  const [copingSkillsCompleted, setCopingSkillsCompleted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const router = useRouter(); // Initialize router for navigation
-
-  const questions =
-    questionSet === "highSchool"
-      ? highSchoolQuestions?.questions
-      : questionSet === "middleSchool"
-      ? middleSchoolQuestions?.questions
-      : [];
-
-  const currentQuestion = questions[currentQuestionIndex] || {
-    question: "No question available",
-    answers: [],
-    correct: -1, // Default value if no correct answer is provided
-  };
-
-  const handleDragStart = (e, answer) => {
-    e.dataTransfer.setData("text/plain", answer); // Store the dragged answer
-  };
-
-  const handleDrop = (e, slotIndex) => {
-    const answer = e.dataTransfer.getData("text/plain");
-    e.preventDefault();
-
-    // Prevent overwriting an already dropped answer
-    if (slots[slotIndex].droppedAnswer) return;
-
-    // Update the slot with the dropped answer
-    const updatedSlots = [...slots];
-    updatedSlots[slotIndex].droppedAnswer = answer;
-    setSlots(updatedSlots);
-
-    // Remove the answer from the draggable pool
-    const updatedAnswers = dragAnswers.filter((item) => item !== answer);
-    setDragAnswers(updatedAnswers);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault(); // Allow dropping
-  };
-
-  const handlePoolSubmit = () => {
-    let correctCount = correctAnswers;
-
-    // Check answers for each slot
-    slots.forEach((slot) => {
-      if (slot.droppedAnswer && slot.droppedAnswer.startsWith(slot.correctAnswer)) {
-        correctCount += 1; // Increment for correct matches
-      }
-    });
-
-    setCorrectAnswers(correctCount);
-    setIsPoolStep(false); // Exit pool step
-    setShowResult(true); // Show final results
-  };
-
-  const handleResetQuiz = () => {
-    setQuestionSet(null); // Reset to the level selection screen
-    setCurrentQuestionIndex(0);
-    setSelectedAnswer(null);
-    setAnswerSubmitted(false);
-    setShowResult(false); // Reset the result screen
-    setCorrectAnswers(0); // Reset the correct answers count
-    setIsPoolStep(false); // Reset the pool step
-    setDragAnswers([...highSchoolQuestionPool.pool]); // Reset draggable answers
-    setSlots(
-      highSchoolQuestionPool.questions.map((question) => ({
-        ...question,
-        droppedAnswer: null,
-      }))
-    ); // Reset slots
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex + 1 < questions.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedAnswer(null);
-      setAnswerSubmitted(false); // Reset for the next question
-    } else {
-      // After normal questions, go to the pool step
-      setIsPoolStep(true);
+  const getBackgroundImage = () => {
+    if (showResult) {
+      return '/checkpoint1backdrop.png';
     }
+    if (showCheckpoint) {
+      return '/checkpoint1backdrop.png';
+    }
+    if (showSecondCheckpoint) {
+      return '/checkpoint1backdrop.png';
+    }
+    if (currentQuestionIndex === 6 || currentQuestionIndex === 7 || currentQuestionIndex === 8) {
+      return '/checkpoint1backdrop.png';
+    }
+    return '/questionBackdrop.png';
+  };
+
+  const handleAnswerSelect = (index) => {
+    if (showResult) return; // Prevent changing answer after submission
+    setSelectedAnswer(index);
   };
 
   const handleSubmitAnswer = () => {
-    setAnswerSubmitted(true); // Mark the answer as submitted
-    if (selectedAnswer === currentQuestion.correct) {
-      setCorrectAnswers(correctAnswers + 1); // Increment correct answers if the selected answer is correct
+    if (selectedAnswer === null) return;
+    
+    setSubmitted(true);
+    
+    if (selectedAnswer === questions.questions[currentQuestionIndex].correct) {
+      setScore(score + 1);
     }
   };
 
-  const handleAnswerClick = (index) => {
-    setSelectedAnswer(index); // Update the selectedAnswer state with the clicked answer's index
-  };
-  
-  
+  const handleNextQuestion = () => {
+    console.log('currentQuestionIndex', currentQuestionIndex);
+    // Special case handling for interactive questions
 
+
+    // Checkpoint handling
+    if (currentQuestionIndex === 5) {
+      setShowCheckpoint(true);
+      return;
+    }
+    // Show second checkpoint after question 8 (index 8)
+    if (currentQuestionIndex === 8) {
+      setShowSecondCheckpoint(true);
+      return;
+    }
+
+    // Regular question progression
+    const nextIndex = currentQuestionIndex + 1;
+    if (nextIndex < questions.questions.length) {
+      setCurrentQuestionIndex(nextIndex);
+      setSelectedAnswer(null);
+      setSubmitted(false);
+      setCopingSkillsCompleted(false); // Reset coping skills completion state
+    } else {
+      setShowResult(true);
+    }
+  };
+
+  const handleResetQuiz = () => {
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setScore(0);
+    setShowCheckpoint(false);
+    setShowSecondCheckpoint(false);
+    setCopingSkillsCompleted(false);
+  };
+
+  const handleContinueToNextSection = () => {
+    setShowCheckpoint(false);
+    setCurrentQuestionIndex(6);
+    setSubmitted(false);
+    setSelectedAnswer(null);
+  };
+
+  const handleContinueFromSecondCheckpoint = () => {
+    setShowSecondCheckpoint(false);
+    setCurrentQuestionIndex(9);
+    setSubmitted(false);
+    setSelectedAnswer(null);
+  };
+
+  const currentQuestion = questions.questions[currentQuestionIndex];
+  const isBrainActionsMatch = currentQuestion.type === 'brainActionsMatch';
+  const isDragDrop = currentQuestion.type === 'dragDrop';
+  console.log(currentQuestion);
   return (
-    <div
-      className={`font-poppins h-[100dvh] py-6 ${
-        showResult ? "bg-cover bg-center" : "bg-secondary"
-      }`}
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative bg-background font-poppins"
       style={{
-        backgroundImage: showResult ? "url('/gator_on_river.jpg')" : "none", // Use gator.jpg only on the final step
+        backgroundImage: `url(${getBackgroundImage()})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <span className="w-full justify-between flex text-primary px-10">
-        {/* Left Arrow */}
-        <button onClick={handleResetQuiz}>
-          <FaArrowCircleLeft size={48} />
-        </button>
-        {/* Right Arrow */}
-        <button
-          onClick={() =>
-            isPoolStep ? handlePoolSubmit() : currentQuestionIndex + 1 < questions.length
-              ? handleNextQuestion()
-              : setShowResult(true)
-          }
-        >
-          <FaArrowCircleRight size={48} />
-        </button>
-      </span>
-      <div className="flex flex-col justify-center items-center h-full pb-24">
-        {!questionSet ? (
-          <div className="w-4/5 bg-primary rounded-xl shadow-md p-6 text-center">
-            <h2 className="text-2xl font-semibold mb-4">Select Your Level</h2>
-            <div className="flex justify-center gap-4">
+      <div className="w-full max-w-4xl mx-auto">
+        {showResult ? (
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-8 text-center">
+            <h2 className="text-3xl font-bold text-primary mb-4">Quiz Complete!</h2>
+            <p className="text-xl mb-6 text-primary">
+              You got {score} out of {questions.questions.length} questions correct!
+            </p>
+            <div className="space-y-4">
               <button
-                onClick={() => setQuestionSet("middleSchool")}
-                className="px-4 py-2 bg-accent text-white rounded-lg text-lg font-medium"
+                onClick={handleResetQuiz}
+                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors"
               >
-                Middle School
+                Try Again
               </button>
               <button
-                onClick={() => setQuestionSet("highSchool")}
-                className="px-4 py-2 bg-accent text-white rounded-lg text-lg font-medium"
+                onClick={() => router.push('/')}
+                className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-colors"
               >
-                High School
+                Exit Quiz
               </button>
             </div>
           </div>
-        ) : isPoolStep ? (
-          // Pool Step
-          <div className="w-4/5 bg-primary rounded-xl shadow-md p-6">
-            <h2 className="text-2xl font-semibold mb-4">Match the Questions to Answers</h2>
-            <div className="flex flex-wrap gap-4 mb-6">
-              {dragAnswers.map((answer, index) => (
-                <div
-                  key={index}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, answer)}
-                  className="cursor-pointer p-3 bg-secondary text-black rounded-lg shadow-md  max-w-[50%]"
-                >
-                  {answer}
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 gap-4 overflow-auto max-h-[400px]">
-            {slots.map((slot, index) => (
-  <div
-    key={slot.id}
-    onDrop={(e) => handleDrop(e, index)}
-    onDragOver={handleDragOver}
-    className="p-4 bg-primary2 text-white rounded-lg shadow-md"
-  >
-    <p>{slot.text}</p>
-    <div className="mt-2 p-3 bg-white text-black rounded-lg flex justify-between items-center">
-      {slot.droppedAnswer || "Drop your answer here"}
-      {slot.droppedAnswer && (
-        <span
-          className="cursor-pointer text-red-500 ml-2"
-          onClick={() => {
-            // Store the dropped answer before removing it
-            const removedAnswer = slot.droppedAnswer;
-
-            // Add the removed answer back to the pool
-            setDragAnswers((prevAnswers) => [...prevAnswers, removedAnswer]);
-
-            // Remove the answer from the slot
-            const updatedSlots = [...slots];
-            updatedSlots[index].droppedAnswer = null;
-            setSlots(updatedSlots);
-          }}
-        >
-          <FaXmark size={22} />
-        </span>
-      )}
-    </div>
-  </div>
-))}
-
-
+        ) : showCheckpoint ? (
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-8 text-center">
+            <h2 className="text-3xl font-bold text-primary mb-4">Checkpoint Reached!</h2>
+            <p className="text-xl mb-6 text-secondary">
+            Check point passed- time to help this brain! 
+            </p>
+            <div className="flex justify-center">
+              <img src="/brain.png" alt="Unlocked Door" className="max-w-md rounded-lg shadow-lg mb-6" />
             </div>
             <button
-              onClick={handlePoolSubmit}
-              className="mt-4 px-4 py-2 bg-accent text-white rounded-lg"
+              onClick={handleContinueToNextSection}
+              className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors"
             >
-              Submit Pool Step
+              Continue to Next Section
             </button>
           </div>
-        ) : !showResult ? (
-          <div className="w-4/5 bg-primary rounded-xl shadow-md p-6">
-            <h2 className="text-2xl font-semibold mb-4">{currentQuestion.question}</h2>
-            <ul className="grid grid-cols-2 gap-2">
-              {currentQuestion.answers.map((answer, index) => (
-                <li
-                  key={index}
-                  onClick={() =>
-                    !answerSubmitted ? handleAnswerClick(index) : null
-                  }
-                  className={`cursor-pointer p-3 rounded-lg text-lg flex justify-between items-center ${
-                    answerSubmitted
-                      ? index === currentQuestion.correct
-                        ? "bg-green-500 text-white"
-                        : selectedAnswer === index
-                        ? "bg-red-500 text-white"
-                        : "bg-primaryMuted"
-                      : selectedAnswer === index
-                      ? "bg-primary2 text-white"
-                      : "bg-primaryMuted"
-                  }`}
-                >
-                  {answer}
-                  {selectedAnswer === index && <span><FaCheck /></span>}
-                </li>
-              ))}
-            </ul>
+        ) : showSecondCheckpoint ? (
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-8 text-center">
+            <h2 className="text-3xl font-bold text-primary mb-4">Checkpoint Reached!</h2>
+            <p className="text-xl mb-6 text-secondary px-4">
+            This brain can't remember what the right answer is, can you help it? True or False: there the best coping skills for myself are the same exact ones as other peoples.
+            </p>
+            <div className="flex justify-center">
+              <img src="/brain.png" alt="Unlocked Door" className="max-w-md rounded-lg shadow-lg mb-6" />
+            </div>
             <button
-              onClick={answerSubmitted ? handleNextQuestion : handleSubmitAnswer}
-              disabled={selectedAnswer === null}
-              className={`mt-4 px-4 py-2 rounded-lg ${
-                selectedAnswer === null
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-accent text-white"
-              }`}
+              onClick={handleContinueFromSecondCheckpoint}
+              className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors"
             >
-              {answerSubmitted
-                ? currentQuestionIndex + 1 < questions.length
-                  ? "Next"
-                  : "Go to Pool Step"
-                : "Submit"}
+              Continue to Next Section
             </button>
           </div>
         ) : (
-          <div className="text-center bg-black/50 px-10 py-16 rounded-xl">
-            <h2 className="text-2xl font-bold text-zinc-100">Quiz Completed!</h2>
-            <p className="text-lg text-zinc-300 mt-2">
-              You scored {correctAnswers} out of{" "}
-              {questions.length + highSchoolQuestionPool.questions.length}!
-            </p>
-            <button
-              onClick={handleResetQuiz}
-              className="mt-4 px-4 py-2 bg-accent text-white rounded-lg"
-            >
-              Try Again
-            </button>
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-8" >
+            <h2 className="text-2xl font-bold text-primary mb-4">
+              Question {currentQuestionIndex + 1} of {questions.questions.length}
+            </h2>
+            {isBrainActionsMatch ? (
+              <BrainActionsMatch onComplete={() => {
+                setCopingSkillsCompleted(true);
+                handleNextQuestion();
+              }} />
+            ) : isDragDrop ? (
+              <DragDropQuestion question={currentQuestion} onComplete={handleNextQuestion} />
+            ) : (
+              <QuestionDisplay
+                currentQuestion={currentQuestion}
+                currentQuestionIndex={currentQuestionIndex}
+                totalQuestions={questions.questions.length}
+                selectedAnswer={selectedAnswer}
+                submitted={submitted}
+                onAnswerSelect={handleAnswerSelect}
+                onNextQuestion={handleNextQuestion}
+                onSubmitAnswer={handleSubmitAnswer}
+                copingSkillsCompleted={copingSkillsCompleted}
+                setCopingSkillsCompleted={setCopingSkillsCompleted}
+              />
+            )}
           </div>
         )}
       </div>
